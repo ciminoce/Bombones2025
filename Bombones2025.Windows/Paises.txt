@@ -1,0 +1,29 @@
+﻿1|México
+2|Brasil
+3|Estados Unidos
+4|Chile
+5|Argentina
+7|Uruguay
+8|Inglaterra
+9|Irlanda
+10|Escosia
+11|Australia
+12|Nueva Zelandia
+13|Alemania
+14|Noruega
+15|Finlandia
+16|Suecia
+17|Dinamarca
+18|Belgica
+19|Países Bajos
+20|Francia
+22|Indonesia
+23|Islas Feroe
+24|España
+25|Albania
+27|Alaska
+28|Colombia
+29|Marruecos
+30|Guatemala
+31|Islandia
+32|Perú
