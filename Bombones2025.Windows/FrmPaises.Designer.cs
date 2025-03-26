@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             dgvDatos = new DataGridView();
             colId = new DataGridViewTextBoxColumn();
@@ -89,13 +89,12 @@
             // 
             dgvDatos.AllowUserToAddRows = false;
             dgvDatos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
-            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
+            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvDatos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDatos.Columns.AddRange(new DataGridViewColumn[] { colId, colPais });
             dgvDatos.Dock = DockStyle.Fill;
             dgvDatos.Location = new Point(0, 0);
-            dgvDatos.MultiSelect = false;
             dgvDatos.Name = "dgvDatos";
             dgvDatos.ReadOnly = true;
             dgvDatos.RowHeadersVisible = false;
@@ -201,6 +200,7 @@
             TsbNuevo.Size = new Size(46, 59);
             TsbNuevo.Text = "Nuevo";
             TsbNuevo.TextImageRelation = TextImageRelation.ImageAboveText;
+            TsbNuevo.Click += TsbNuevo_Click;
             // 
             // TsbBorrar
             // 
@@ -211,6 +211,7 @@
             TsbBorrar.Size = new Size(44, 59);
             TsbBorrar.Text = "Borrar";
             TsbBorrar.TextImageRelation = TextImageRelation.ImageAboveText;
+            TsbBorrar.Click += TsbBorrar_Click;
             // 
             // TsbEditar
             // 
@@ -221,6 +222,7 @@
             TsbEditar.Size = new Size(44, 59);
             TsbEditar.Text = "Editar";
             TsbEditar.TextImageRelation = TextImageRelation.ImageAboveText;
+            TsbEditar.Click += TsbEditar_Click;
             // 
             // toolStripSeparator1
             // 
@@ -276,6 +278,7 @@
             TsbCerrar.Size = new Size(44, 59);
             TsbCerrar.Text = "Cerrar";
             TsbCerrar.TextImageRelation = TextImageRelation.ImageAboveText;
+            TsbCerrar.Click += TsbCerrar_Click;
             // 
             // toolStrip1
             // 
@@ -295,6 +298,7 @@
             Controls.Add(toolStrip1);
             Name = "FrmPaises";
             Text = "Paises";
+            Load += FrmPaises_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();

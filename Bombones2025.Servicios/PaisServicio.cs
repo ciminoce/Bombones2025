@@ -11,10 +11,32 @@ namespace Bombones2025.Servicios
             _paisRepositorio = new PaisRepositorio(ruta);
         }
 
+        public void Borrar(Pais pais)
+        {
+            _paisRepositorio.Borrar(pais);
+        }
+
+        public bool Existe(Pais pais)
+        {
+            return _paisRepositorio.Existe(pais);
+        }
 
         public List<Pais> GetPaises()
         {
             return _paisRepositorio.GetPaises();
+        }
+
+        public void Guardar(Pais pais)
+        {
+            if (pais.PaisId==0)
+            {
+                _paisRepositorio.Agregar(pais);
+
+            }
+            else
+            {
+                _paisRepositorio.Editar(pais);
+            }
         }
     }
 }

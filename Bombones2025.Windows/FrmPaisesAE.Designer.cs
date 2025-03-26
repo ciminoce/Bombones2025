@@ -66,6 +66,7 @@
             BtnOK.TabIndex = 2;
             BtnOK.Text = "OK";
             BtnOK.UseVisualStyleBackColor = true;
+            BtnOK.Click += BtnOK_Click;
             // 
             // BtnCancelar
             // 
@@ -75,6 +76,7 @@
             BtnCancelar.TabIndex = 2;
             BtnCancelar.Text = "Cancelar";
             BtnCancelar.UseVisualStyleBackColor = true;
+            BtnCancelar.Click += BtnCancelar_Click;
             // 
             // FrmPaisesAE
             // 

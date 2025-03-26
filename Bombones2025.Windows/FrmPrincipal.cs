@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bombones2025.Servicios;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,13 @@ namespace Bombones2025.Windows
         public FrmPrincipal()
         {
             InitializeComponent();
+        }
+
+        private void BtnPaises_Click(object sender, EventArgs e)
+        {
+            PaisServicio servicio = new PaisServicio("Paises.Txt");
+            FrmPaises frm = new FrmPaises(servicio) { Text = "Listado de Paises" };
+            frm.ShowDialog(this);
         }
     }
 }

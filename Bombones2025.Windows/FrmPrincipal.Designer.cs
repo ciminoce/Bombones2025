@@ -39,6 +39,7 @@
             BtnPaises.TabIndex = 0;
             BtnPaises.Text = "Países";
             BtnPaises.UseVisualStyleBackColor = true;
+            BtnPaises.Click += BtnPaises_Click;
             // 
             // FrmPrincipal
             // 

@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bombones2025.Entidades\Bombones2025.Entidades.csproj" />
+    <ProjectReference Include="..\Bombones2025.Servicios\Bombones2025.Servicios.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
