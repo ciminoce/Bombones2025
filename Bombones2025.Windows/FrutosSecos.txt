@@ -1,0 +1,10 @@
+﻿1|Nueces
+2|Avellanas
+3|Maní
+4|Pistachos
+5|Almendras
+6|Castañas
+7|Pasas
+8|Castañas de Caju
+9|Semillas
+10|Ciruelas
