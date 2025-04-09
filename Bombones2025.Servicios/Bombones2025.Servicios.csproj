@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bombones2025.DatosSql\Bombones2025.DatosSql.csproj" />
     <ProjectReference Include="..\Bombones2025.Datos\Bombones2025.Datos.csproj" />
   </ItemGroup>
 

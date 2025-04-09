@@ -1,4 +1,4 @@
-﻿using Bombones2025.Servicios;
+﻿using Bombones2025.Servicios.Servicios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,9 +20,20 @@ namespace Bombones2025.Windows
 
         private void BtnPaises_Click(object sender, EventArgs e)
         {
-            PaisServicio servicio = new PaisServicio("Paises.Txt");
-            FrmPaises frm = new FrmPaises(servicio) { Text = "Listado de Paises" };
-            frm.ShowDialog(this);
+            try
+            {
+                PaisServicio servicio = new PaisServicio();
+                FrmPaises frm = new FrmPaises(servicio) { Text = "Listado de Paises" };
+                frm.ShowDialog(this);
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }

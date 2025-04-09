@@ -1,5 +1,5 @@
 ﻿using Bombones2025.Entidades;
-using Bombones2025.Servicios;
+using Bombones2025.Servicios.Servicios;
 public class Program
 {
     private static void Main(string[] args)

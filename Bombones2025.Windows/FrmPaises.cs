@@ -1,5 +1,5 @@
 ﻿using Bombones2025.Entidades;
-using Bombones2025.Servicios;
+using Bombones2025.Servicios.Servicios;
 
 namespace Bombones2025.Windows
 {
@@ -16,8 +16,19 @@ namespace Bombones2025.Windows
 
         private void FrmPaises_Load(object sender, EventArgs e)
         {
-            _paises = _paisServicio.GetPaises();
-            MostrarDatosEnGrilla();
+            try
+            {
+                _paises = _paisServicio.GetPaises();
+                MostrarDatosEnGrilla();
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message,"Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            } 
         }
 
         private void MostrarDatosEnGrilla()
@@ -57,22 +68,32 @@ namespace Bombones2025.Windows
             if (dr == DialogResult.Cancel) return;
             Pais? pais = frm.GetPais();
             if (pais == null) return;
-            if (!_paisServicio.Existe(pais))
+            try
             {
-                _paisServicio.Guardar(pais);
-                DataGridViewRow r = new DataGridViewRow();
-                r.CreateCells(dgvDatos);
-                SetearFila(r, pais);
-                AgregarFila(r);
-                MessageBox.Show("Pais agregado", "Mensaje",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (!_paisServicio.Existe(pais))
+                {
+                    _paisServicio.Guardar(pais);
+                    DataGridViewRow r = new DataGridViewRow();
+                    r.CreateCells(dgvDatos);
+                    SetearFila(r, pais);
+                    AgregarFila(r);
+                    MessageBox.Show("Pais agregado", "Mensaje",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                else
+                {
+                    MessageBox.Show("Pais existente", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
 
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Pais existente", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                MessageBox.Show(ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -89,9 +110,18 @@ namespace Bombones2025.Windows
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.No) return;
-            _paisServicio.Borrar(paisBorrar);
-            dgvDatos.Rows.Remove(r);
-            MessageBox.Show("País eliminado");
+            try
+            {
+                _paisServicio.Borrar(paisBorrar.PaisId);
+                dgvDatos.Rows.Remove(r);
+                MessageBox.Show("País eliminado");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         private void TsbEditar_Click(object sender, EventArgs e)
@@ -108,21 +138,21 @@ namespace Bombones2025.Windows
             if (dr == DialogResult.Cancel) return;
             pais = frm.GetPais();
             if (pais == null) return;
-            if (!_paisServicio.Existe(pais))
-            {
-                _paisServicio.Guardar(pais);
-                SetearFila(r, pais);
+            //if (!_paisServicio.Existe(pais))
+            //{
+            //    _paisServicio.Guardar(pais);
+            //    SetearFila(r, pais);
 
-                MessageBox.Show("Pais editado", "Mensaje",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    MessageBox.Show("Pais editado", "Mensaje",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            }
-            else
-            {
-                MessageBox.Show("Pais existente", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Pais existente", "Error",
+            //            MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            }
+            //}
         }
     }
 }

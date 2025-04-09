@@ -1,7 +1,7 @@
 ﻿using Bombones2025.Datos.Repositorios;
 using Bombones2025.Entidades;
 
-namespace Bombones2025.Servicios
+namespace Bombones2025.Servicios.Servicios
 {
     public class FrutoSecoServicio
     {
