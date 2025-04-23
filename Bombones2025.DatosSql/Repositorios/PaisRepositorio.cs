@@ -101,10 +101,25 @@ namespace Bombones2025.DatosSql.Repositorios
                 using (var cnn = new SqlConnection(connectionString))
                 {
                     cnn.Open();
-                    string query = @"SELECT COUNT(*) FROM Paises 
-                        WHERE LOWER(NombrePais)=LOWER(@NombrePais)";
+                    string query;
+                    if (pais.PaisId == 0)
+                    {
+                        query = @"SELECT COUNT(*) FROM Paises 
+                            WHERE LOWER(NombrePais)=LOWER(@NombrePais)";
+
+                    }
+                    else
+                    {
+                        query = @"SELECT COUNT(*) FROM Paises 
+                            WHERE LOWER(NombrePais)=LOWER(@NombrePais) AND 
+                                PaisId<>@PaisId";
+                    }
                     using (var cmd = new SqlCommand(query, cnn))
                     {
+                        if (pais.PaisId != 0)
+                        {
+                            cmd.Parameters.AddWithValue("@PaisId", pais.PaisId);
+                        }
                         cmd.Parameters.AddWithValue("@NombrePais", pais.NombrePais);
                         int cantidad = (int)cmd.ExecuteScalar();
                         return cantidad > 0;
@@ -141,7 +156,69 @@ namespace Bombones2025.DatosSql.Repositorios
             catch (Exception ex)
             {
 
-                throw ex;
+                throw new Exception("Error al intentar borrar el registro", ex);
+            }
+        }
+
+        public void Editar(Pais pais)
+        {
+            try
+            {
+                using (var cnn=new SqlConnection(connectionString))
+                {
+                    cnn.Open();
+                    var query = @"UPDATE Paises SET NombrePais=@NombrePais
+                               WHERE PaisId=@PaisId";
+                    using (var cmd=new SqlCommand(query,cnn))
+                    {
+                        cmd.Parameters.AddWithValue("@NombrePais", pais.NombrePais);
+                        cmd.Parameters.AddWithValue("@PaisId", pais.PaisId);
+                        cmd.ExecuteNonQuery();
+                    }
+                    Pais? paisEditar = paises.FirstOrDefault(p => p.PaisId == pais.PaisId);
+                    if (paisEditar == null) return;
+                    paisEditar.NombrePais = pais.NombrePais;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al intentar editar el registro",ex);
+            }
+        }
+
+        public List<Pais> Filtrar(string textoParaFiltrar)
+        {
+            var listaFiltrada = new List<Pais>();
+
+            try
+            {
+                using (var cnn = new SqlConnection(connectionString))
+                {
+                    cnn.Open();
+                    var query = @"select * from Paises WHERE NombrePais LIKE @texto";
+                    using (var cmd = new SqlCommand(query, cnn))
+                    {
+                        textoParaFiltrar += "%";
+                        cmd.Parameters.AddWithValue("@texto", textoParaFiltrar);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var pais = ConstruirPais(reader);
+                                listaFiltrada.Add(pais);
+                            }
+                        }
+                    }
+                }
+                return listaFiltrada;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al intentar filtrar los países",ex);
             }
         }
     }

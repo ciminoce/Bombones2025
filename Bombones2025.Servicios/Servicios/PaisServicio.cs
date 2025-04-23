@@ -30,6 +30,11 @@ namespace Bombones2025.Servicios.Servicios
             return _paisRepositorio.Existe(pais);
         }
 
+        public List<Pais> Filtrar(string textoParaFiltrar)
+        {
+            return _paisRepositorio.Filtrar(textoParaFiltrar);
+        }
+
         public List<Pais> GetPaises()
         {
             return _paisRepositorio.GetPaises();
@@ -42,10 +47,10 @@ namespace Bombones2025.Servicios.Servicios
                 _paisRepositorio.Agregar(pais);
 
             }
-            //else
-            //{
-            //    _paisRepositorio.Editar(pais);
-            //}
+            else
+            {
+                _paisRepositorio.Editar(pais);
+            }
         }
     }
 }

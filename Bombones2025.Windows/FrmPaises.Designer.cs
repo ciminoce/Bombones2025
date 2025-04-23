@@ -238,6 +238,7 @@
             TsbFiltrar.Size = new Size(44, 59);
             TsbFiltrar.Text = "Filtrar";
             TsbFiltrar.TextImageRelation = TextImageRelation.ImageAboveText;
+            TsbFiltrar.Click += TsbFiltrar_Click;
             // 
             // TsbActualizar
             // 
@@ -248,6 +249,7 @@
             TsbActualizar.Size = new Size(63, 59);
             TsbActualizar.Text = "Actualizar";
             TsbActualizar.TextImageRelation = TextImageRelation.ImageAboveText;
+            TsbActualizar.Click += TsbActualizar_Click;
             // 
             // toolStripSeparator2
             // 

@@ -8,5 +8,13 @@
         {
             return $"{NombrePais}";
         }
+        public Pais Clonar()
+        {
+            return new Pais
+            {
+                PaisId = PaisId,
+                NombrePais = NombrePais
+            };
+        }
     }
 }

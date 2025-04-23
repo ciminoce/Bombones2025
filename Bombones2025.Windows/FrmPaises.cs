@@ -1,5 +1,7 @@
 ﻿using Bombones2025.Entidades;
 using Bombones2025.Servicios.Servicios;
+using Bombones2025.Windows.Properties;
+using System.Reflection;
 
 namespace Bombones2025.Windows
 {
@@ -8,6 +10,8 @@ namespace Bombones2025.Windows
         private readonly PaisServicio _paisServicio;
 
         private List<Pais> _paises = new();
+
+        private bool filterOn = false;
         public FrmPaises(PaisServicio paisServicio)
         {
             InitializeComponent();
@@ -25,10 +29,10 @@ namespace Bombones2025.Windows
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message,"Error",
+                MessageBox.Show(ex.Message, "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-            } 
+            }
         }
 
         private void MostrarDatosEnGrilla()
@@ -132,27 +136,87 @@ namespace Bombones2025.Windows
             }
             var r = dgvDatos.SelectedRows[0];
             Pais? pais = (Pais)r.Tag!;
+            if (pais == null) return;
+            Pais? paisEditar = pais.Clonar();
             FrmPaisesAE frm = new FrmPaisesAE() { Text = "Editar País" };
-            frm.SetPais(pais);
+            frm.SetPais(paisEditar);
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) return;
-            pais = frm.GetPais();
-            if (pais == null) return;
-            //if (!_paisServicio.Existe(pais))
-            //{
-            //    _paisServicio.Guardar(pais);
-            //    SetearFila(r, pais);
+            paisEditar = frm.GetPais();
+            if (paisEditar == null) return;
+            try
+            {
+                if (!_paisServicio.Existe(paisEditar))
+                {
+                    _paisServicio.Guardar(paisEditar);
+                    SetearFila(r, paisEditar);
 
-            //    MessageBox.Show("Pais editado", "Mensaje",
-            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Pais editado", "Mensaje",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Pais existente", "Error",
-            //            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Pais existente", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            //}
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+        }
+
+        private void TsbFiltrar_Click(object sender, EventArgs e)
+        {
+            if (!filterOn)
+            {
+                FrmFiltro frm = new FrmFiltro() { Text = "Filtrar Paises" };
+                DialogResult dr = frm.ShowDialog(this);
+                string? textoParaFiltrar = frm.GetTexto();
+                if (textoParaFiltrar is null) return;
+                try
+                {
+                    _paises = _paisServicio.Filtrar(textoParaFiltrar);
+                    MostrarDatosEnGrilla();
+                    TsbFiltrar.Image = Resources.filter_intense_40px;
+                    filterOn = true;
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Quitar el filtro!!!", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void TsbActualizar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                filterOn=false;
+                TsbFiltrar.Image = Resources.filter_40px;
+                _paises = _paisServicio.GetPaises();
+                MostrarDatosEnGrilla();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
