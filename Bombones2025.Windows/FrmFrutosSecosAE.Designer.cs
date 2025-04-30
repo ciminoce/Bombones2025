@@ -1,6 +1,6 @@
 ﻿namespace Bombones2025.Windows
 {
-    partial class FrmPaisesAE
+    partial class FrmFrutosSecosAE
     {
         /// <summary>
         /// Required designer variable.
@@ -29,42 +29,21 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            label1 = new Label();
-            TxtPais = new TextBox();
-            errorProvider1 = new ErrorProvider(components);
             BtnCancelar = new Button();
             BtnOK = new Button();
+            TxtFrutoSeco = new TextBox();
+            label1 = new Label();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(41, 43);
-            label1.Name = "label1";
-            label1.Size = new Size(31, 15);
-            label1.TabIndex = 0;
-            label1.Text = "País:";
-            // 
-            // TxtPais
-            // 
-            TxtPais.Location = new Point(78, 40);
-            TxtPais.MaxLength = 200;
-            TxtPais.Name = "TxtPais";
-            TxtPais.Size = new Size(377, 23);
-            TxtPais.TabIndex = 1;
-            // 
-            // errorProvider1
-            // 
-            errorProvider1.ContainerControl = this;
             // 
             // BtnCancelar
             // 
             BtnCancelar.Image = Properties.Resources.Cancelar;
-            BtnCancelar.Location = new Point(398, 79);
+            BtnCancelar.Location = new Point(383, 63);
             BtnCancelar.Name = "BtnCancelar";
             BtnCancelar.Size = new Size(75, 52);
-            BtnCancelar.TabIndex = 7;
+            BtnCancelar.TabIndex = 5;
             BtnCancelar.Text = "Cancelar";
             BtnCancelar.TextImageRelation = TextImageRelation.ImageAboveText;
             BtnCancelar.UseVisualStyleBackColor = true;
@@ -73,26 +52,50 @@
             // BtnOK
             // 
             BtnOK.Image = Properties.Resources.Aceptar1;
-            BtnOK.Location = new Point(59, 79);
+            BtnOK.Location = new Point(44, 63);
             BtnOK.Name = "BtnOK";
             BtnOK.Size = new Size(75, 52);
-            BtnOK.TabIndex = 8;
+            BtnOK.TabIndex = 6;
             BtnOK.Text = "OK";
             BtnOK.TextImageRelation = TextImageRelation.ImageAboveText;
             BtnOK.UseVisualStyleBackColor = true;
             BtnOK.Click += BtnOK_Click;
             // 
-            // FrmPaisesAE
+            // TxtFrutoSeco
+            // 
+            TxtFrutoSeco.Location = new Point(116, 18);
+            TxtFrutoSeco.MaxLength = 100;
+            TxtFrutoSeco.Name = "TxtFrutoSeco";
+            TxtFrutoSeco.Size = new Size(342, 23);
+            TxtFrutoSeco.TabIndex = 4;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(44, 21);
+            label1.Name = "label1";
+            label1.Size = new Size(66, 15);
+            label1.TabIndex = 3;
+            label1.Text = "Fruto Seco:";
+            // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
+            // FrmFrutosSecosAE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(532, 150);
+            ClientSize = new Size(495, 164);
             Controls.Add(BtnCancelar);
             Controls.Add(BtnOK);
-            Controls.Add(TxtPais);
+            Controls.Add(TxtFrutoSeco);
             Controls.Add(label1);
-            Name = "FrmPaisesAE";
-            Text = "FrmPaisesAE";
+            MaximumSize = new Size(511, 203);
+            MinimumSize = new Size(511, 203);
+            Name = "FrmFrutosSecosAE";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "FrmFrutosSecosAE";
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -100,10 +103,10 @@
 
         #endregion
 
-        private Label label1;
-        private TextBox TxtPais;
-        private ErrorProvider errorProvider1;
         private Button BtnCancelar;
         private Button BtnOK;
+        private TextBox TxtFrutoSeco;
+        private Label label1;
+        private ErrorProvider errorProvider1;
     }
 }

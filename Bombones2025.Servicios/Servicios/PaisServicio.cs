@@ -16,7 +16,7 @@ namespace Bombones2025.Servicios.Servicios
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             } 
         }
 
@@ -35,9 +35,9 @@ namespace Bombones2025.Servicios.Servicios
             return _paisRepositorio.Filtrar(textoParaFiltrar);
         }
 
-        public List<Pais> GetPaises()
+        public List<Pais> GetLista()
         {
-            return _paisRepositorio.GetPaises();
+            return _paisRepositorio.GetLista();
         }
 
         public void Guardar(Pais pais)

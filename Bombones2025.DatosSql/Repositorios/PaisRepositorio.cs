@@ -52,7 +52,7 @@ namespace Bombones2025.DatosSql.Repositorios
         /// de país
         /// </summary>
         /// <returns></returns>
-        public List<Pais> GetPaises()
+        public List<Pais> GetLista()
         {
             return paises.OrderBy(p => p.NombrePais).ToList();
         }
@@ -83,8 +83,10 @@ namespace Bombones2025.DatosSql.Repositorios
                         cmd.Parameters.AddWithValue("@NombrePais", pais.NombrePais);
                         int paisId = (int)(decimal)cmd.ExecuteScalar();
                         pais.PaisId = paisId;
+
                     }
                 }
+                paises.Add(pais);
 
             }
             catch (Exception ex)

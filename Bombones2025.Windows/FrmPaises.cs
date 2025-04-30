@@ -22,7 +22,7 @@ namespace Bombones2025.Windows
         {
             try
             {
-                _paises = _paisServicio.GetPaises();
+                _paises = _paisServicio.GetLista();
                 MostrarDatosEnGrilla();
 
             }
@@ -208,7 +208,7 @@ namespace Bombones2025.Windows
             {
                 filterOn=false;
                 TsbFiltrar.Image = Resources.filter_40px;
-                _paises = _paisServicio.GetPaises();
+                _paises = _paisServicio.GetLista();
                 MostrarDatosEnGrilla();
             }
             catch (Exception ex)
