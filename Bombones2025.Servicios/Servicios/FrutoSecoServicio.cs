@@ -8,7 +8,7 @@ namespace Bombones2025.Servicios.Servicios
         private readonly FrutoSecoRepositorio _frutoRepositorio = null!;
         public FrutoSecoServicio()
         {
-            _frutoRepositorio = new FrutoSecoRepositorio();
+            _frutoRepositorio = new FrutoSecoRepositorio(true);
         }
 
         public bool Existe(FrutoSeco fruto)

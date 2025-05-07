@@ -6,14 +6,24 @@ namespace Bombones2025.DatosSql.Repositorios
 {
     public class FrutoSecoRepositorio
     {
-        private List<FrutoSeco> frutos = new();
+        private readonly bool _usarCache;
+        private List<FrutoSeco> frutosCache = new();
         private readonly string _connectionString = null!;
-        public FrutoSecoRepositorio()
+        public FrutoSecoRepositorio(bool usarCache=false)
         {
+            _usarCache = usarCache;
             _connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ToString();
+            if (_usarCache)
+            {
+                LeerDatos();
+
+            }
+        }
+        public void RecargarCache()
+        {
+            frutosCache.Clear();
             LeerDatos();
         }
-
         private void LeerDatos()
         {
             try
@@ -29,7 +39,7 @@ namespace Bombones2025.DatosSql.Repositorios
                             while (reader.Read())
                             {
                                 FrutoSeco fs = ConstruirFrutoSeco(reader);
-                                frutos.Add(fs);
+                                frutosCache.Add(fs);
                             }
                         }
                     }
@@ -39,7 +49,7 @@ namespace Bombones2025.DatosSql.Repositorios
             catch (Exception ex)
             {
 
-                throw new Exception("Error al intentar leer los frutos secos", ex);
+                throw new Exception("Error al intentar leer los frutosCache secos", ex);
             }
         }
 
@@ -53,11 +63,42 @@ namespace Bombones2025.DatosSql.Repositorios
         }
         public List<FrutoSeco> GetLista()
         {
-            return frutos;
+            if (_usarCache)
+            {
+                return frutosCache;
+
+            }
+            List<FrutoSeco> lista = new List<FrutoSeco>();
+            using (var cnn = new SqlConnection(_connectionString))
+            {
+                cnn.Open();
+                string query = @"SELECT FrutoSecoId, Descripcion
+                        FROM FrutosSecos ORDER BY Descripcion";
+                using (var cmd = new SqlCommand(query, cnn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            FrutoSeco fs = ConstruirFrutoSeco(reader);
+                            lista.Add(fs);
+                        }
+                    }
+                }
+            }
+            return lista;
         }
 
         public bool Existe(FrutoSeco fruto)
         {
+            if (_usarCache)
+            {
+                return fruto.FrutoSecoId == 0 ? frutosCache
+                    .Any(c => c.Descripcion.ToLower() == fruto.Descripcion.ToLower())
+                    : frutosCache.Any(c => c.Descripcion.ToLower() == fruto.Descripcion.ToLower()
+                    && c.FrutoSecoId != fruto.FrutoSecoId);
+            }
+
             try
             {
                 using (var cnn = new SqlConnection(_connectionString))
@@ -103,7 +144,10 @@ namespace Bombones2025.DatosSql.Repositorios
                         fruto.FrutoSecoId = id;
                     }
                 }
-                frutos.Add(fruto);
+                if (_usarCache)
+                {
+                    RecargarCache();
+                } 
             }
             catch (Exception ex)
             {
@@ -126,9 +170,10 @@ namespace Bombones2025.DatosSql.Repositorios
                         cmd.ExecuteNonQuery();
                     }
                 }
-                FrutoSeco? fsBorrar = frutos.FirstOrDefault(f => f.FrutoSecoId == frutoId);
-                if (fsBorrar is null) return;
-                frutos.Remove(fsBorrar);
+                if (_usarCache)
+                {
+                    RecargarCache();
+                } 
             }
             catch (Exception ex)
             {
@@ -154,9 +199,10 @@ namespace Bombones2025.DatosSql.Repositorios
                     }
 
                 }
-                FrutoSeco? fsEditar = frutos.FirstOrDefault(f => f.FrutoSecoId == fruto.FrutoSecoId);
-                if (fsEditar is null) return;
-                fsEditar.Descripcion = fruto.Descripcion;
+                if (_usarCache)
+                {
+                    RecargarCache();
+                } 
             }
             catch (Exception ex)
             {
