@@ -30,12 +30,21 @@ namespace Bombones2025.Windows.Helpers
         /// </summary>
         /// <param name="r">Fila a popular</param>
         /// <param name="chocolate">objeto que se muestra</param>
-        public static void SetearFila(DataGridViewRow r, Chocolate chocolate)
+        public static void SetearFila(DataGridViewRow r, object obj)
         {
-            r.Cells[0].Value = chocolate.ChocolateId;
-            r.Cells[1].Value = chocolate.Descripcion;
+            switch (obj)
+            {
+                case Chocolate chocolate:
+                    r.Cells[0].Value = chocolate.ChocolateId;
+                    r.Cells[1].Value = chocolate.Descripcion;
+                    break;
+                case Pais pais:
+                    r.Cells[0].Value=pais.PaisId;
+                    r.Cells[1].Value = pais.NombrePais;
+                    break;
+            }
 
-            r.Tag = chocolate;
+            r.Tag = obj;
         }
         /// <summary>
         /// Método estático para agregar una fila a una grilla
