@@ -1,5 +1,5 @@
 ﻿using Bombones2025.DatosSql.Repositorios;
-using Bombones2025.Entidades;
+using Bombones2025.Entidades.Entidades;
 
 namespace Bombones2025.Servicios.Servicios
 {

@@ -4,11 +4,11 @@ using System.Configuration;
 
 namespace Bombones2025.DatosSql.Repositorios
 {
-    public class FrutoSecoRepositorio
+    public class RellenoRepositorio
     {
-        private List<FrutoSeco> frutos = new();
+        private List<Relleno> rellenos = new();
         private readonly string _connectionString = null!;
-        public FrutoSecoRepositorio()
+        public RellenoRepositorio()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ToString();
             LeerDatos();
@@ -21,15 +21,15 @@ namespace Bombones2025.DatosSql.Repositorios
                 using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
-                    var query = @"SELECT FrutoSecoId, Descripcion FROM FrutosSecos ORDER BY Descripcion";
+                    var query = @"SELECT RellenoId, Descripcion FROM Rellenos ORDER BY Descripcion";
                     using (var cmd = new SqlCommand(query, cnn))
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                FrutoSeco fs = ConstruirFrutoSeco(reader);
-                                frutos.Add(fs);
+                                Relleno relleno = ConstruirRelleno(reader);
+                                rellenos.Add(relleno);
                             }
                         }
                     }
@@ -39,41 +39,41 @@ namespace Bombones2025.DatosSql.Repositorios
             catch (Exception ex)
             {
 
-                throw new Exception("Error al intentar leer los frutos secos", ex);
+                throw new Exception("Error al intentar leer los rellenos", ex);
             }
         }
 
-        private FrutoSeco ConstruirFrutoSeco(SqlDataReader reader)
+        private Relleno ConstruirRelleno(SqlDataReader reader)
         {
-            return new FrutoSeco
+            return new Relleno
             {
-                FrutoSecoId = reader.GetInt32(0),
+                RellenoId = reader.GetInt32(0),
                 Descripcion = reader.GetString(1)
             };
         }
-        public List<FrutoSeco> GetLista()
+        public List<Relleno> GetLista()
         {
-            return frutos;
+            return rellenos;
         }
 
-        public bool Existe(FrutoSeco fruto)
+        public bool Existe(Relleno relleno)
         {
             try
             {
                 using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
-                    string query = fruto.FrutoSecoId == 0 ? @"SELECT COUNT(*) FROM FrutosSecos
+                    string query = relleno.RellenoId == 0 ? @"SELECT COUNT(*) FROM Rellenos
                                 WHERE LOWER(Descripcion)=@Descripcion"
-                        : @"SELECT COUNT(*) FROM FrutosSecos
+                        : @"SELECT COUNT(*) FROM Rellenos
                                 WHERE LOWER(Descripcion)=@Descripcion
-                                AND FrutoSecoId<>@FrutoSecoId";
+                                AND RellenoId<>@RellenoId";
                     using (var cmd = new SqlCommand(query, cnn))
                     {
-                        cmd.Parameters.AddWithValue("@Descripcion", fruto.Descripcion);
-                        if (fruto.FrutoSecoId > 0)
+                        cmd.Parameters.AddWithValue("@Descripcion", relleno.Descripcion);
+                        if (relleno.RellenoId > 0)
                         {
-                            cmd.Parameters.AddWithValue("@FrutoSecoId", fruto.FrutoSecoId);
+                            cmd.Parameters.AddWithValue("@RellenoId", relleno.RellenoId);
                         }
                         return (int)cmd.ExecuteScalar() > 0;
                     }
@@ -83,85 +83,85 @@ namespace Bombones2025.DatosSql.Repositorios
             catch (Exception ex)
             {
 
-                throw new Exception("Error al intentar ver si existe un fruto seco", ex);
+                throw new Exception("Error al intentar ver si existe un relleno", ex);
             }
         }
 
-        public void Agregar(FrutoSeco fruto)
+        public void Agregar(Relleno relleno)
         {
             try
             {
                 using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
-                    string query = @"INSERT INTO FrutosSecos (Descripcion) VALUES (@Descripcion);
+                    string query = @"INSERT INTO Rellenos (Descripcion) VALUES (@Descripcion);
                                 SELECT SCOPE_IDENTITY();";
                     using (var cmd = new SqlCommand(query, cnn))
                     {
-                        cmd.Parameters.AddWithValue("@Descripcion", fruto.Descripcion);
+                        cmd.Parameters.AddWithValue("@Descripcion", relleno.Descripcion);
                         int id = (int)(decimal)cmd.ExecuteScalar();
-                        fruto.FrutoSecoId = id;
+                        relleno.RellenoId = id;
                     }
                 }
-                frutos.Add(fruto);
+                rellenos.Add(relleno);
             }
             catch (Exception ex)
             {
 
-                throw new Exception("Error al intentar agregar un fruto seco", ex);
+                throw new Exception("Error al intentar agregar un relleno", ex);
             }
         }
 
-        public void Borrar(int frutoId)
+        public void Borrar(int chocolateId)
         {
             try
             {
                 using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
-                    string query = @"DELETE FROM FrutosSecos WHERE FrutoSecoId=@FrutoSecoId";
+                    string query = @"DELETE FROM Rellenos WHERE RellenoId=@RellenoId";
                     using (var cmd = new SqlCommand(query, cnn))
                     {
-                        cmd.Parameters.AddWithValue("@FrutoSecoId", frutoId);
+                        cmd.Parameters.AddWithValue("@RellenoId", chocolateId);
                         cmd.ExecuteNonQuery();
                     }
                 }
-                FrutoSeco? fsBorrar = frutos.FirstOrDefault(f => f.FrutoSecoId == frutoId);
-                if (fsBorrar is null) return;
-                frutos.Remove(fsBorrar);
+                Relleno? rellenoBorrar = rellenos.FirstOrDefault(f => f.RellenoId == chocolateId);
+                if (rellenoBorrar is null) return;
+                rellenos.Remove(rellenoBorrar);
             }
             catch (Exception ex)
             {
 
-                throw new Exception("Error al intentar borrar un fruto seco", ex);
+                throw new Exception("Error al intentar borrar un relleno", ex);
             }
         }
 
-        public void Editar(FrutoSeco fruto)
+        public void Editar(Relleno relleno)
         {
             try
             {
                 using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
-                    string query = @"UPDATE FrutosSecos SET Descripcion=@Descripcion
-                    WHERE FrutoSecoId=@FrutoSecoId";
+                    string query = @"UPDATE Rellenos SET Descripcion=@Descripcion
+                    WHERE RellenoId=@RellenoId";
                     using (var cmd = new SqlCommand(query, cnn))
                     {
-                        cmd.Parameters.AddWithValue("@Descripcion", fruto.Descripcion);
-                        cmd.Parameters.AddWithValue("@FrutoSecoId", fruto.FrutoSecoId);
+                        cmd.Parameters.AddWithValue("@Descripcion", relleno.Descripcion);
+                        cmd.Parameters.AddWithValue("@RellenoId", relleno.RellenoId);
                         cmd.ExecuteNonQuery();
                     }
 
                 }
-                FrutoSeco? fsEditar = frutos.FirstOrDefault(f => f.FrutoSecoId == fruto.FrutoSecoId);
-                if (fsEditar is null) return;
-                fsEditar.Descripcion = fruto.Descripcion;
+                Relleno? rellenoEditar = rellenos.FirstOrDefault(f => f.RellenoId == relleno.RellenoId);
+                if (rellenoEditar is null) return;
+                rellenoEditar.Descripcion = relleno.Descripcion;
             }
             catch (Exception ex)
             {
 
-                throw new Exception("Error al intentar editar un fruto seco", ex);
+                throw new Exception("Error al intentar editar un relleno", ex);
             }
         }
     }

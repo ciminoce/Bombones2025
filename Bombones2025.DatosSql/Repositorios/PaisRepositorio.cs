@@ -1,4 +1,4 @@
-﻿using Bombones2025.Entidades;
+﻿using Bombones2025.Entidades.Entidades;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 

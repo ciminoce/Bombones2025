@@ -1,4 +1,4 @@
-﻿namespace Bombones2025.Entidades
+﻿namespace Bombones2025.Entidades.Entidades
 {
     public class Pais
     {

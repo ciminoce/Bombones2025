@@ -2,35 +2,35 @@
 
 namespace Bombones2025.Windows
 {
-    public partial class FrmFrutosSecosAE : Form
+    public partial class FrmChocolatesAE : Form
     {
-        private FrutoSeco? fruto;
-        public FrmFrutosSecosAE()
+        public FrmChocolatesAE()
         {
             InitializeComponent();
         }
+        private Chocolate? chocolate;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (fruto is not null)
+            if (chocolate is not null)
             {
-                TxtFrutoSeco.Text = fruto.Descripcion;
+                TxtChocolate.Text = chocolate.Descripcion;
             }
         }
-        public FrutoSeco? GetFrutoSeco()
+        public Chocolate? GetChocolate()
         {
-            return fruto;
+            return chocolate;
         }
 
         private void BtnOK_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-                if (fruto is null)
+                if (chocolate is null)
                 {
-                    fruto = new FrutoSeco();
+                    chocolate = new Chocolate();
                 }
-                fruto.Descripcion = TxtFrutoSeco.Text.Trim();
+                chocolate.Descripcion = TxtChocolate.Text.Trim();
                 DialogResult = DialogResult.OK;
             }
         }
@@ -39,10 +39,10 @@ namespace Bombones2025.Windows
         {
             bool valido = true;
             errorProvider1.Clear();
-            if (string.IsNullOrEmpty(TxtFrutoSeco.Text.Trim()))
+            if (string.IsNullOrEmpty(TxtChocolate.Text.Trim()))
             {
                 valido = false;
-                errorProvider1.SetError(TxtFrutoSeco, "La descripción es requerida");
+                errorProvider1.SetError(TxtChocolate, "La descripción es requerida");
             }
             return valido;
         }
@@ -52,9 +52,10 @@ namespace Bombones2025.Windows
             DialogResult = DialogResult.Cancel;
         }
 
-        public void SetFruto(FrutoSeco fs)
+        public void SetChocolate(Chocolate chocolate)
         {
-            fruto = fs;
+            this.chocolate = chocolate;
         }
+
     }
 }

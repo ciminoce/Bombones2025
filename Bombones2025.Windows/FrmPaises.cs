@@ -1,4 +1,4 @@
-﻿using Bombones2025.Entidades;
+﻿using Bombones2025.Entidades.Entidades;
 using Bombones2025.Servicios.Servicios;
 using Bombones2025.Windows.Properties;
 using System.Reflection;

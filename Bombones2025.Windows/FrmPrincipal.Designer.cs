@@ -30,6 +30,8 @@
         {
             BtnPaises = new Button();
             BtnFrutosSecos = new Button();
+            BtnRellenos = new Button();
+            BtnChocolates = new Button();
             SuspendLayout();
             // 
             // BtnPaises
@@ -52,11 +54,33 @@
             BtnFrutosSecos.UseVisualStyleBackColor = true;
             BtnFrutosSecos.Click += BtnFrutosSecos_Click;
             // 
+            // BtnRellenos
+            // 
+            BtnRellenos.Location = new Point(265, 46);
+            BtnRellenos.Name = "BtnRellenos";
+            BtnRellenos.Size = new Size(87, 54);
+            BtnRellenos.TabIndex = 0;
+            BtnRellenos.Text = "Rellenos";
+            BtnRellenos.UseVisualStyleBackColor = true;
+            BtnRellenos.Click += BtnRellenos_Click;
+            // 
+            // BtnChocolates
+            // 
+            BtnChocolates.Location = new Point(380, 46);
+            BtnChocolates.Name = "BtnChocolates";
+            BtnChocolates.Size = new Size(87, 54);
+            BtnChocolates.TabIndex = 0;
+            BtnChocolates.Text = "Chocolates";
+            BtnChocolates.UseVisualStyleBackColor = true;
+            BtnChocolates.Click += BtnChocolates_Click;
+            // 
             // FrmPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(BtnChocolates);
+            Controls.Add(BtnRellenos);
             Controls.Add(BtnFrutosSecos);
             Controls.Add(BtnPaises);
             Name = "FrmPrincipal";
@@ -68,5 +92,7 @@
 
         private Button BtnPaises;
         private Button BtnFrutosSecos;
+        private Button BtnRellenos;
+        private Button BtnChocolates;
     }
 }

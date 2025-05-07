@@ -1,6 +1,6 @@
 ﻿namespace Bombones2025.Windows
 {
-    partial class FrmFrutosSecos
+    partial class FrmChocolates
     {
         /// <summary>
         /// Required designer variable.
@@ -289,17 +289,17 @@
             toolStrip1.TabIndex = 4;
             toolStrip1.Text = "toolStrip1";
             // 
-            // FrmFrutosSecos
+            // FrmChocolates
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 617);
             Controls.Add(splitContainer1);
             Controls.Add(toolStrip1);
-            Name = "FrmFrutosSecos";
+            Name = "FrmChocolates";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Frutos Secos";
-            Load += FrmFrutosSecos_Load;
+            Text = "Chocolates";
+            Load += FrmChocolates_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();
@@ -336,5 +336,6 @@
         private ToolStrip toolStrip1;
         private DataGridViewTextBoxColumn colId;
         private DataGridViewTextBoxColumn colDescripcion;
+
     }
 }

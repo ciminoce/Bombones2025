@@ -3,17 +3,17 @@ using Bombones2025.Servicios.Servicios;
 
 namespace Bombones2025.Windows
 {
-    public partial class FrmFrutosSecos : Form
+    public partial class FrmRellenos : Form
     {
-        private readonly FrutoSecoServicio _servicio = null!;
-        private List<FrutoSeco> lista = null!;
-        public FrmFrutosSecos(FrutoSecoServicio servicio)
+        private readonly RellenoServicio _servicio = null!;
+        private List<Relleno> lista = null!;
+       public FrmRellenos(RellenoServicio servicio)
         {
             InitializeComponent();
             _servicio = servicio;
         }
 
-        private void FrmFrutosSecos_Load(object sender, EventArgs e)
+        private void FrmRellenos_Load(object sender, EventArgs e)
         {
             try
             {
@@ -30,11 +30,11 @@ namespace Bombones2025.Windows
         private void MostrarDatosEnGrilla()
         {
             dgvDatos.Rows.Clear();
-            foreach (FrutoSeco fs in lista)
+            foreach (Relleno relleno in lista)
             {
                 DataGridViewRow r = new DataGridViewRow();
                 r.CreateCells(dgvDatos);
-                SetearFila(r, fs);
+                SetearFila(r, relleno);
                 AgregarFila(r);
             }
         }
@@ -44,12 +44,12 @@ namespace Bombones2025.Windows
             dgvDatos.Rows.Add(r);
         }
 
-        private void SetearFila(DataGridViewRow r, FrutoSeco frutoSeco)
+        private void SetearFila(DataGridViewRow r, Relleno relleno)
         {
-            r.Cells[0].Value = frutoSeco.FrutoSecoId;
-            r.Cells[1].Value = frutoSeco.Descripcion;
+            r.Cells[0].Value = relleno.RellenoId;
+            r.Cells[1].Value = relleno.Descripcion;
 
-            r.Tag = frutoSeco;
+            r.Tag = relleno;
         }
 
         private void TsbCerrar_Click(object sender, EventArgs e)
@@ -59,18 +59,18 @@ namespace Bombones2025.Windows
 
         private void TsbNuevo_Click(object sender, EventArgs e)
         {
-            FrmFrutosSecosAE frm = new FrmFrutosSecosAE() { Text = "Agregar Fruto Seco" };
+            FrmRellenosAE frm = new FrmRellenosAE() { Text = "Agregar Relleno" };
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) return;
-            FrutoSeco? fruto = frm.GetFrutoSeco();
-            if (fruto is null) return;
+            Relleno? relleno = frm.GetRelleno();
+            if (relleno is null) return;
             try
             {
-                if (!_servicio.Existe(fruto))
+                if (!_servicio.Existe(relleno))
                 {
-                    _servicio.Guardar(fruto);
+                    _servicio.Guardar(relleno);
                     DataGridViewRow r = ConstuirFila();
-                    SetearFila(r, fruto);
+                    SetearFila(r, relleno);
                     AgregarFila(r);
                     MessageBox.Show("Registro Agregado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -101,16 +101,16 @@ namespace Bombones2025.Windows
         {
             if (dgvDatos.SelectedRows.Count == 0) return;
             DataGridViewRow r = dgvDatos.SelectedRows[0];
-            FrutoSeco? fs = r.Tag as FrutoSeco;
-            if (fs is null) return;
-            DialogResult dr = MessageBox.Show($"¿Desea borrar el registro de {fs}?",
+            Relleno? relleno = r.Tag as Relleno;
+            if (relleno is null) return;
+            DialogResult dr = MessageBox.Show($"¿Desea borrar el registro de {relleno}?",
                 "Confirmar Baja",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.No) return;
             try
             {
-                _servicio.Borrar(fs.FrutoSecoId);
+                _servicio.Borrar(relleno.RellenoId);
                 QuitarFila(r);
                 MessageBox.Show("Registro Eliminado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -133,21 +133,21 @@ namespace Bombones2025.Windows
         {
             if (dgvDatos.SelectedRows.Count == 0) return;
             DataGridViewRow r = dgvDatos.SelectedRows[0];
-            FrutoSeco? fs = r.Tag as FrutoSeco;
-            if (fs is null) return;
-            FrutoSeco? fsEditar = fs.Clonar();
-            FrmFrutosSecosAE frm = new FrmFrutosSecosAE() { Text = "Editar Fruto Seco" };
-            frm.SetFruto(fsEditar);
+            Relleno? relleno = r.Tag as Relleno;
+            if (relleno is null) return;
+            Relleno? rellenoEditar = relleno.Clonar();
+            FrmRellenosAE frm = new FrmRellenosAE() { Text = "Editar Relleno" };
+            frm.SetRelleno(rellenoEditar);
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) return;
-            fsEditar = frm.GetFrutoSeco();
-            if (fsEditar is null) return;
+            rellenoEditar = frm.GetRelleno();
+            if (rellenoEditar is null) return;
             try
             {
-                if (!_servicio.Existe(fsEditar))
+                if (!_servicio.Existe(rellenoEditar))
                 {
-                    _servicio.Guardar(fsEditar);
-                    SetearFila(r, fsEditar);
+                    _servicio.Guardar(rellenoEditar);
+                    SetearFila(r, rellenoEditar);
                     MessageBox.Show("Registro Editado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -165,5 +165,7 @@ namespace Bombones2025.Windows
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
     }
 }

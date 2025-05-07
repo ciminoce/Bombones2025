@@ -45,5 +45,43 @@ namespace Bombones2025.Windows
             }
 
         }
+
+        private void BtnRellenos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                RellenoServicio servicio = new RellenoServicio();
+                FrmRellenos frm = new FrmRellenos(servicio) { Text = "Listado de Rellenos" };
+                frm.ShowDialog(this);
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void BtnChocolates_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ChocolateServicio servicio = new ChocolateServicio();
+                FrmChocolates frm = new FrmChocolates(servicio) { Text = "Listado de Chocolates" };
+                frm.ShowDialog(this);
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
+        }
     }
 }

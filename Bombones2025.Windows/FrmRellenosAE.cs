@@ -1,36 +1,45 @@
 ﻿using Bombones2025.Entidades.Entidades;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Bombones2025.Windows
 {
-    public partial class FrmFrutosSecosAE : Form
+    public partial class FrmRellenosAE : Form
     {
-        private FrutoSeco? fruto;
-        public FrmFrutosSecosAE()
+        public FrmRellenosAE()
         {
             InitializeComponent();
         }
+        private Relleno? relleno;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (fruto is not null)
+            if (relleno is not null)
             {
-                TxtFrutoSeco.Text = fruto.Descripcion;
+                TxtRelleno.Text = relleno.Descripcion;
             }
         }
-        public FrutoSeco? GetFrutoSeco()
+        public Relleno? GetRelleno()
         {
-            return fruto;
+            return relleno;
         }
 
         private void BtnOK_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-                if (fruto is null)
+                if (relleno is null)
                 {
-                    fruto = new FrutoSeco();
+                    relleno = new Relleno();
                 }
-                fruto.Descripcion = TxtFrutoSeco.Text.Trim();
+                relleno.Descripcion = TxtRelleno.Text.Trim();
                 DialogResult = DialogResult.OK;
             }
         }
@@ -39,10 +48,10 @@ namespace Bombones2025.Windows
         {
             bool valido = true;
             errorProvider1.Clear();
-            if (string.IsNullOrEmpty(TxtFrutoSeco.Text.Trim()))
+            if (string.IsNullOrEmpty(TxtRelleno.Text.Trim()))
             {
                 valido = false;
-                errorProvider1.SetError(TxtFrutoSeco, "La descripción es requerida");
+                errorProvider1.SetError(TxtRelleno, "La descripción es requerida");
             }
             return valido;
         }
@@ -52,9 +61,11 @@ namespace Bombones2025.Windows
             DialogResult = DialogResult.Cancel;
         }
 
-        public void SetFruto(FrutoSeco fs)
+        public void SetRelleno(Relleno relleno)
         {
-            fruto = fs;
+            this.relleno = relleno;
         }
+
+
     }
 }

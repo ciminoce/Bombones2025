@@ -3,17 +3,17 @@ using Bombones2025.Servicios.Servicios;
 
 namespace Bombones2025.Windows
 {
-    public partial class FrmFrutosSecos : Form
+    public partial class FrmChocolates : Form
     {
-        private readonly FrutoSecoServicio _servicio = null!;
-        private List<FrutoSeco> lista = null!;
-        public FrmFrutosSecos(FrutoSecoServicio servicio)
+        private readonly ChocolateServicio _servicio = null!;
+        private List<Chocolate> lista = null!;
+        public FrmChocolates(ChocolateServicio servicio)
         {
             InitializeComponent();
             _servicio = servicio;
         }
 
-        private void FrmFrutosSecos_Load(object sender, EventArgs e)
+        private void FrmChocolates_Load(object sender, EventArgs e)
         {
             try
             {
@@ -30,11 +30,11 @@ namespace Bombones2025.Windows
         private void MostrarDatosEnGrilla()
         {
             dgvDatos.Rows.Clear();
-            foreach (FrutoSeco fs in lista)
+            foreach (Chocolate chocolate in lista)
             {
                 DataGridViewRow r = new DataGridViewRow();
                 r.CreateCells(dgvDatos);
-                SetearFila(r, fs);
+                SetearFila(r, chocolate);
                 AgregarFila(r);
             }
         }
@@ -44,9 +44,9 @@ namespace Bombones2025.Windows
             dgvDatos.Rows.Add(r);
         }
 
-        private void SetearFila(DataGridViewRow r, FrutoSeco frutoSeco)
+        private void SetearFila(DataGridViewRow r, Chocolate frutoSeco)
         {
-            r.Cells[0].Value = frutoSeco.FrutoSecoId;
+            r.Cells[0].Value = frutoSeco.ChocolateId;
             r.Cells[1].Value = frutoSeco.Descripcion;
 
             r.Tag = frutoSeco;
@@ -59,18 +59,18 @@ namespace Bombones2025.Windows
 
         private void TsbNuevo_Click(object sender, EventArgs e)
         {
-            FrmFrutosSecosAE frm = new FrmFrutosSecosAE() { Text = "Agregar Fruto Seco" };
+            FrmChocolatesAE frm = new FrmChocolatesAE() { Text = "Agregar Chocolate" };
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) return;
-            FrutoSeco? fruto = frm.GetFrutoSeco();
-            if (fruto is null) return;
+            Chocolate? chocolate = frm.GetChocolate();
+            if (chocolate is null) return;
             try
             {
-                if (!_servicio.Existe(fruto))
+                if (!_servicio.Existe(chocolate))
                 {
-                    _servicio.Guardar(fruto);
+                    _servicio.Guardar(chocolate);
                     DataGridViewRow r = ConstuirFila();
-                    SetearFila(r, fruto);
+                    SetearFila(r, chocolate);
                     AgregarFila(r);
                     MessageBox.Show("Registro Agregado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -101,16 +101,16 @@ namespace Bombones2025.Windows
         {
             if (dgvDatos.SelectedRows.Count == 0) return;
             DataGridViewRow r = dgvDatos.SelectedRows[0];
-            FrutoSeco? fs = r.Tag as FrutoSeco;
-            if (fs is null) return;
-            DialogResult dr = MessageBox.Show($"¿Desea borrar el registro de {fs}?",
+            Chocolate? chocolate = r.Tag as Chocolate;
+            if (chocolate is null) return;
+            DialogResult dr = MessageBox.Show($"¿Desea borrar el registro de {chocolate}?",
                 "Confirmar Baja",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.No) return;
             try
             {
-                _servicio.Borrar(fs.FrutoSecoId);
+                _servicio.Borrar(chocolate.ChocolateId);
                 QuitarFila(r);
                 MessageBox.Show("Registro Eliminado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -133,21 +133,21 @@ namespace Bombones2025.Windows
         {
             if (dgvDatos.SelectedRows.Count == 0) return;
             DataGridViewRow r = dgvDatos.SelectedRows[0];
-            FrutoSeco? fs = r.Tag as FrutoSeco;
-            if (fs is null) return;
-            FrutoSeco? fsEditar = fs.Clonar();
-            FrmFrutosSecosAE frm = new FrmFrutosSecosAE() { Text = "Editar Fruto Seco" };
-            frm.SetFruto(fsEditar);
+            Chocolate? chocolate = r.Tag as Chocolate;
+            if (chocolate is null) return;
+            Chocolate? chocoEditar = chocolate.Clonar();
+            FrmChocolatesAE frm = new FrmChocolatesAE() { Text = "Editar Chocolate" };
+            frm.SetChocolate(chocoEditar);
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) return;
-            fsEditar = frm.GetFrutoSeco();
-            if (fsEditar is null) return;
+            chocoEditar = frm.GetChocolate();
+            if (chocoEditar is null) return;
             try
             {
-                if (!_servicio.Existe(fsEditar))
+                if (!_servicio.Existe(chocoEditar))
                 {
-                    _servicio.Guardar(fsEditar);
-                    SetearFila(r, fsEditar);
+                    _servicio.Guardar(chocoEditar);
+                    SetearFila(r, chocoEditar);
                     MessageBox.Show("Registro Editado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -165,5 +165,6 @@ namespace Bombones2025.Windows
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }
