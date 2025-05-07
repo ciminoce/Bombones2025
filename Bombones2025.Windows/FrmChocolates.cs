@@ -1,5 +1,6 @@
 ﻿using Bombones2025.Entidades.Entidades;
 using Bombones2025.Servicios.Servicios;
+using Bombones2025.Windows.Helpers;
 
 namespace Bombones2025.Windows
 {
@@ -29,28 +30,16 @@ namespace Bombones2025.Windows
 
         private void MostrarDatosEnGrilla()
         {
-            dgvDatos.Rows.Clear();
+            GridHelper.LimpiarGrilla(dgvDatos);
             foreach (Chocolate chocolate in lista)
             {
-                DataGridViewRow r = new DataGridViewRow();
-                r.CreateCells(dgvDatos);
-                SetearFila(r, chocolate);
-                AgregarFila(r);
+                var r = GridHelper.ConstruirFila(dgvDatos);
+                GridHelper.SetearFila(r, chocolate);
+                GridHelper.AgregarFila(r,dgvDatos);
             }
         }
 
-        private void AgregarFila(DataGridViewRow r)
-        {
-            dgvDatos.Rows.Add(r);
-        }
 
-        private void SetearFila(DataGridViewRow r, Chocolate frutoSeco)
-        {
-            r.Cells[0].Value = frutoSeco.ChocolateId;
-            r.Cells[1].Value = frutoSeco.Descripcion;
-
-            r.Tag = frutoSeco;
-        }
 
         private void TsbCerrar_Click(object sender, EventArgs e)
         {
@@ -69,9 +58,9 @@ namespace Bombones2025.Windows
                 if (!_servicio.Existe(chocolate))
                 {
                     _servicio.Guardar(chocolate);
-                    DataGridViewRow r = ConstuirFila();
-                    SetearFila(r, chocolate);
-                    AgregarFila(r);
+                    DataGridViewRow r = GridHelper.ConstruirFila(dgvDatos);
+                    GridHelper.SetearFila(r, chocolate);
+                    GridHelper.AgregarFila(r,dgvDatos);
                     MessageBox.Show("Registro Agregado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -90,12 +79,6 @@ namespace Bombones2025.Windows
             }
         }
 
-        private DataGridViewRow ConstuirFila()
-        {
-            var r = new DataGridViewRow();
-            r.CreateCells(dgvDatos);
-            return r;
-        }
 
         private void TsbBorrar_Click(object sender, EventArgs e)
         {
@@ -111,7 +94,7 @@ namespace Bombones2025.Windows
             try
             {
                 _servicio.Borrar(chocolate.ChocolateId);
-                QuitarFila(r);
+                GridHelper.QuitarFila(r, dgvDatos);
                 MessageBox.Show("Registro Eliminado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -122,11 +105,6 @@ namespace Bombones2025.Windows
                 MessageBox.Show(ex.Message, "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void QuitarFila(DataGridViewRow r)
-        {
-            dgvDatos.Rows.Remove(r);
         }
 
         private void TsbEditar_Click(object sender, EventArgs e)
@@ -147,7 +125,7 @@ namespace Bombones2025.Windows
                 if (!_servicio.Existe(chocoEditar))
                 {
                     _servicio.Guardar(chocoEditar);
-                    SetearFila(r, chocoEditar);
+                    GridHelper.SetearFila(r, chocoEditar);
                     MessageBox.Show("Registro Editado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
