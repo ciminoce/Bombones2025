@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             TxtUsuario = new TextBox();
             label2 = new Label();
@@ -36,7 +37,9 @@
             BtnOK = new Button();
             pictureBox1 = new PictureBox();
             label3 = new Label();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -114,6 +117,10 @@
             label3.TabIndex = 10;
             label3.Text = "Acceso al Sistema";
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // FrmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -132,6 +139,7 @@
             Name = "FrmLogin";
             Text = "FrmLogin";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -146,5 +154,6 @@
         private Button BtnOK;
         private PictureBox pictureBox1;
         private Label label3;
+        private ErrorProvider errorProvider1;
     }
 }

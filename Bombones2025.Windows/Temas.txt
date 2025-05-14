@@ -9,5 +9,83 @@ Agregar la clase Usuario
         public string Nombre { get; set; } = null!;
         public string ClaveHash { get; set; } = null!;
     }
--------------------------------------------
+--------------------------------------------------------
+Agregar la clase UsuarioRepositorio
+    public class UsuarioRepositorio
+    {
+        private readonly string _connectionString = null!;
+
+        public UsuarioRepositorio()
+        {
+            _connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ToString();
+            
+        }
+
+
+        public Usuario? Login(string username)
+        {
+            Usuario usuario;
+            using (SqlConnection conn = new(_connectionString))
+            {
+                conn.Open();
+
+                string query = "SELECT UsuarioId, Nombre, ClaveHash, RolId FROM Usuarios WHERE Nombre=@usuario";
+                using (SqlCommand cmd = new(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@usuario", username);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (!reader.Read()) return null;
+
+                        usuario = new Usuario
+                        {
+                            UsuarioId = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            ClaveHash = reader.GetString(2),
+                            //Rol = new Rol { RolId = reader.GetInt32(3) }
+                        };
+
+                    }
+
+                }
+            }
+            return usuario;
+        }
+    }
+-------------------------------------------------------------------
+    Agregar el Servicio
+
+    public class UsuarioServicio
+    {
+        private readonly UsuarioRepositorio usuarioRepositorio;
+
+        public UsuarioServicio()
+        {
+            usuarioRepositorio = new UsuarioRepositorio();
+        }
+
+        public Usuario? Login(string username)
+        {
+            return usuarioRepositorio.Login(username);
+        }
+
+    }
+
+-----------------------------------------
+En la capa de Windows creamos la clase estática SeguridadHelper
+    public static class SeguridadHelper
+    {
+        // Genera un hash seguro con salt
+        public static string GenerarHash(string clave)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(clave);
+        }
+
+        // Verifica la clave ingresada contra el hash almacenado
+        public static bool VerificarHash(string claveIngresada, string hashAlmacenado)
+        {
+            return BCrypt.Net.BCrypt.Verify(claveIngresada, hashAlmacenado);
+        }
+    }
 
