@@ -1,9 +1,11 @@
-﻿using Bombones2025.Servicios.Servicios;
+﻿using Bombones2025.Entidades.Entidades;
+using Bombones2025.Servicios.Servicios;
 
 namespace Bombones2025.Windows
 {
     public partial class FrmPrincipal : Form
     {
+        private Usuario usuario=null!;
         public FrmPrincipal()
         {
             InitializeComponent();
@@ -82,6 +84,11 @@ namespace Bombones2025.Windows
                     MessageBoxIcon.Error);
             }
 
+        }
+
+        public void SetUsuario(Usuario usuarioLogueado)
+        {
+            LblUsuario.Text = usuarioLogueado.Nombre;
         }
     }
 }

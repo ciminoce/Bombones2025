@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Bombones2025.Entidades\Bombones2025.Entidades.csproj" />
     <ProjectReference Include="..\Bombones2025.Servicios\Bombones2025.Servicios.csproj" />
   </ItemGroup>

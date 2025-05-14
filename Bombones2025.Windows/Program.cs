@@ -1,3 +1,5 @@
+using Bombones2025.Servicios.Servicios;
+
 namespace Bombones2025.Windows
 {
     internal static class Program
@@ -11,7 +13,8 @@ namespace Bombones2025.Windows
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmPrincipal());
+            UsuarioServicio usuarioServicio = new UsuarioServicio();
+            Application.Run(new FrmLogin(usuarioServicio));
         }
     }
 }

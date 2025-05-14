@@ -84,6 +84,7 @@
             BtnCancelar.Text = "Cancelar";
             BtnCancelar.TextImageRelation = TextImageRelation.ImageAboveText;
             BtnCancelar.UseVisualStyleBackColor = true;
+            BtnCancelar.Click += BtnCancelar_Click;
             // 
             // BtnOK
             // 
@@ -95,6 +96,7 @@
             BtnOK.Text = "OK";
             BtnOK.TextImageRelation = TextImageRelation.ImageAboveText;
             BtnOK.UseVisualStyleBackColor = true;
+            BtnOK.Click += BtnOK_Click;
             // 
             // pictureBox1
             // 
@@ -126,6 +128,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(604, 221);
+            ControlBox = false;
             Controls.Add(label3);
             Controls.Add(pictureBox1);
             Controls.Add(BtnCancelar);
@@ -137,6 +140,7 @@
             MaximumSize = new Size(620, 260);
             MinimumSize = new Size(620, 260);
             Name = "FrmLogin";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmLogin";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
