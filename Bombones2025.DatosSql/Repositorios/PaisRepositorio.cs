@@ -6,13 +6,37 @@ namespace Bombones2025.DatosSql.Repositorios
 {
     public class PaisRepositorio
     {
+        private readonly bool _usarCache;
         private List<Pais> paises = new();
-        private readonly string? connectionString;
-        public PaisRepositorio()
+        private readonly string? _connectionString;
+        public PaisRepositorio(int umbralCache=30)
         {
-            connectionString = ConfigurationManager
+            _connectionString = ConfigurationManager
                     .ConnectionStrings["MiConexion"].ToString();
-            LeerDatos();
+            var cantidadRegistros = ObtenerCantidadRegistros();
+            _usarCache = cantidadRegistros <= umbralCache;
+            if (_usarCache)
+            {
+                LeerDatos();
+
+            }
+        }
+        /// <summary>
+        /// Método privado por ahora para obtener la cantidad de registros
+        /// de la tabla
+        /// </summary>
+        /// <returns>un int con la cantidad de registros</returns>
+        private int ObtenerCantidadRegistros()
+        {
+            using (var cnn=new SqlConnection(_connectionString))
+            {
+                cnn.Open();
+                string query = @"SELECT COUNT(*) FROM Paises";
+                using (var cmd = new SqlCommand(query, cnn))
+                {
+                    return (int)cmd.ExecuteScalar();
+                }
+            }
         }
         /// <summary>
         /// Método privado para leer los registros de la tabla de Paises
@@ -22,7 +46,7 @@ namespace Bombones2025.DatosSql.Repositorios
         {
             try
             {
-                using (var cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
                     string query = "SELECT PaisId, NombrePais FROM Paises";
@@ -54,7 +78,28 @@ namespace Bombones2025.DatosSql.Repositorios
         /// <returns></returns>
         public List<Pais> GetLista()
         {
-            return paises.OrderBy(p => p.NombrePais).ToList();
+            if (_usarCache)
+            {
+                return paises.OrderBy(p => p.NombrePais).ToList();
+            }
+            List<Pais> lista = new List<Pais>();
+            using (var cnn=new SqlConnection(_connectionString))
+            {
+                cnn.Open();
+                var query = "SELECT PaisId, NombrePais FROM Paises ORDER BY NombrePais";
+                using (var cmd=new SqlCommand(query,cnn))
+                {
+                    using (var reader=cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Pais p = ConstruirPais(reader);
+                            lista.Add(p);
+                        }
+                    }
+                }
+            }
+            return lista;
         }
         /// <summary>
         /// Método privado para construir un objeto de tipo pais
@@ -73,7 +118,7 @@ namespace Bombones2025.DatosSql.Repositorios
         {
             try
             {
-                using (var cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
                     string query = @"INSERT INTO Paises (NombrePais)
@@ -86,7 +131,11 @@ namespace Bombones2025.DatosSql.Repositorios
 
                     }
                 }
-                paises.Add(pais);
+                if (_usarCache)
+                {
+                    paises.Add(pais);
+
+                }
 
             }
             catch (Exception ex)
@@ -98,9 +147,15 @@ namespace Bombones2025.DatosSql.Repositorios
 
         public bool Existe(Pais pais)
         {
+            if (_usarCache)
+            {
+                return pais.PaisId==0?paises.Any(p=>p.NombrePais==pais.NombrePais)
+                    : paises.Any(p=>p.NombrePais==pais.NombrePais
+                        && p.PaisId!=pais.PaisId);
+            }
             try
             {
-                using (var cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
                     string query;
@@ -140,7 +195,7 @@ namespace Bombones2025.DatosSql.Repositorios
         {
             try
             {
-                using (var cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
                     string query = @"DELETE FROM Paises WHERE PaisId=@PaisId";
@@ -150,10 +205,13 @@ namespace Bombones2025.DatosSql.Repositorios
                         cmd.ExecuteNonQuery();
                     }
                 }
-                Pais? paisBorrar=paises.FirstOrDefault(p=>p.PaisId==paisId);
-                if (paisBorrar == null) return;
-                paises.Remove(paisBorrar);
+                if (_usarCache)
+                {
+                    Pais? paisBorrar = paises.FirstOrDefault(p => p.PaisId == paisId);
+                    if (paisBorrar == null) return;
+                    paises.Remove(paisBorrar);
 
+                }
             }
             catch (Exception ex)
             {
@@ -166,7 +224,7 @@ namespace Bombones2025.DatosSql.Repositorios
         {
             try
             {
-                using (var cnn=new SqlConnection(connectionString))
+                using (var cnn=new SqlConnection(_connectionString))
                 {
                     cnn.Open();
                     var query = @"UPDATE Paises SET NombrePais=@NombrePais
@@ -177,10 +235,13 @@ namespace Bombones2025.DatosSql.Repositorios
                         cmd.Parameters.AddWithValue("@PaisId", pais.PaisId);
                         cmd.ExecuteNonQuery();
                     }
-                    Pais? paisEditar = paises.FirstOrDefault(p => p.PaisId == pais.PaisId);
-                    if (paisEditar == null) return;
-                    paisEditar.NombrePais = pais.NombrePais;
+                    if (_usarCache)
+                    {
+                        Pais? paisEditar = paises.FirstOrDefault(p => p.PaisId == pais.PaisId);
+                        if (paisEditar == null) return;
+                        paisEditar.NombrePais = pais.NombrePais;
 
+                    }
                 }
             }
             catch (Exception ex)
@@ -192,11 +253,17 @@ namespace Bombones2025.DatosSql.Repositorios
 
         public List<Pais> Filtrar(string textoParaFiltrar)
         {
+            if (_usarCache)
+            {
+                return paises
+                    .Where(p => p.NombrePais
+                        .StartsWith(textoParaFiltrar)).ToList();
+            }
             var listaFiltrada = new List<Pais>();
 
             try
             {
-                using (var cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(_connectionString))
                 {
                     cnn.Open();
                     var query = @"select * from Paises WHERE NombrePais LIKE @texto";

@@ -1,5 +1,6 @@
 ﻿using Bombones2025.DatosSql.Repositorios;
 using Bombones2025.Entidades.Entidades;
+using Bombones2025.Utilidades;
 
 namespace Bombones2025.Servicios.Servicios
 {
@@ -8,7 +9,7 @@ namespace Bombones2025.Servicios.Servicios
         private readonly RellenoRepositorio _rellenoRepositorio = null!;
         public RellenoServicio()
         {
-            _rellenoRepositorio = new RellenoRepositorio();
+            _rellenoRepositorio = new RellenoRepositorio(ConstantesDelSistema.umbralCache);
         }
 
         public bool Existe(Relleno relleno)

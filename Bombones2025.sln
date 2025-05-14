@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bombones2025.Servicios", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bombones2025.DatosSql", "Bombones2025.DatosSql\Bombones2025.DatosSql.csproj", "{6CAFFB1D-DEA5-4DFE-8C91-06921526FA7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bombones2025.Utilidades", "Bombones2025.Utilidades\Bombones2025.Utilidades.csproj", "{F407D1F0-F25A-42F3-8F07-1A011BAFD65F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6CAFFB1D-DEA5-4DFE-8C91-06921526FA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CAFFB1D-DEA5-4DFE-8C91-06921526FA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CAFFB1D-DEA5-4DFE-8C91-06921526FA7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F407D1F0-F25A-42F3-8F07-1A011BAFD65F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F407D1F0-F25A-42F3-8F07-1A011BAFD65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F407D1F0-F25A-42F3-8F07-1A011BAFD65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F407D1F0-F25A-42F3-8F07-1A011BAFD65F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

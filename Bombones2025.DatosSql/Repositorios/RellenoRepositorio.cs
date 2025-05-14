@@ -6,14 +6,40 @@ namespace Bombones2025.DatosSql.Repositorios
 {
     public class RellenoRepositorio
     {
+        private readonly bool _usarCache;
         private List<Relleno> rellenos = new();
         private readonly string _connectionString = null!;
-        public RellenoRepositorio()
+        public RellenoRepositorio(int umbralCache=30, bool? usarCache=null)
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ToString();
-            LeerDatos();
+            if (usarCache.HasValue && usarCache.Value==true)
+            {
+                _usarCache = true;
+            }
+            else
+            {
+                int cantidadRegistros = ObtenerCantidadRegistros();
+                _usarCache = cantidadRegistros <= umbralCache;
+            }
+            if (_usarCache)
+            {
+                LeerDatos();
+
+            }
         }
 
+        private int ObtenerCantidadRegistros()
+        {
+            using (var cnn=new SqlConnection(_connectionString))
+            {
+                cnn.Open();
+                var query = "SELECT COUNT(*) FROM Rellenos";
+                using (var cmd=new SqlCommand(query,cnn))
+                {
+                    return (int)cmd.ExecuteScalar();
+                }
+            }
+        }
         private void LeerDatos()
         {
             try
@@ -53,11 +79,39 @@ namespace Bombones2025.DatosSql.Repositorios
         }
         public List<Relleno> GetLista()
         {
-            return rellenos;
+            if (_usarCache)
+            {
+                return rellenos.OrderBy(o => o.Descripcion).ToList();
+            }
+            List<Relleno> lista = new List<Relleno>();
+
+            using (var cnn = new SqlConnection(_connectionString))
+            {
+                cnn.Open();
+                var query = "SELECT RellenoId, Descripcion FROM Rellenos ORDER BY Descripcion";
+                using (var cmd = new SqlCommand(query, cnn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Relleno r = ConstruirRelleno(reader);
+                            lista.Add(r);
+                        }
+                    }
+                }
+            }
+            return lista;
         }
 
         public bool Existe(Relleno relleno)
         {
+            if (_usarCache)
+            {
+                return relleno.RellenoId == 0 ? rellenos.Any(r => r.Descripcion == relleno.Descripcion)
+                                : rellenos.Any(r => r.Descripcion == relleno.Descripcion &&
+                                    r.RellenoId != relleno.RellenoId);
+            }
             try
             {
                 using (var cnn = new SqlConnection(_connectionString))
@@ -103,7 +157,11 @@ namespace Bombones2025.DatosSql.Repositorios
                         relleno.RellenoId = id;
                     }
                 }
-                rellenos.Add(relleno);
+                if (_usarCache)
+                {
+                    rellenos.Add(relleno);
+
+                } 
             }
             catch (Exception ex)
             {
@@ -126,9 +184,13 @@ namespace Bombones2025.DatosSql.Repositorios
                         cmd.ExecuteNonQuery();
                     }
                 }
-                Relleno? rellenoBorrar = rellenos.FirstOrDefault(f => f.RellenoId == chocolateId);
-                if (rellenoBorrar is null) return;
-                rellenos.Remove(rellenoBorrar);
+                if (_usarCache)
+                {
+                    Relleno? rellenoBorrar = rellenos.FirstOrDefault(f => f.RellenoId == chocolateId);
+                    if (rellenoBorrar is null) return;
+                    rellenos.Remove(rellenoBorrar);
+
+                }
             }
             catch (Exception ex)
             {
@@ -154,9 +216,13 @@ namespace Bombones2025.DatosSql.Repositorios
                     }
 
                 }
-                Relleno? rellenoEditar = rellenos.FirstOrDefault(f => f.RellenoId == relleno.RellenoId);
-                if (rellenoEditar is null) return;
-                rellenoEditar.Descripcion = relleno.Descripcion;
+                if (_usarCache)
+                {
+                    Relleno? rellenoEditar = rellenos.FirstOrDefault(f => f.RellenoId == relleno.RellenoId);
+                    if (rellenoEditar is null) return;
+                    rellenoEditar.Descripcion = relleno.Descripcion;
+
+                }
             }
             catch (Exception ex)
             {

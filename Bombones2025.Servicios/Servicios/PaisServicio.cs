@@ -1,5 +1,6 @@
 ﻿using Bombones2025.DatosSql.Repositorios;
 using Bombones2025.Entidades.Entidades;
+using Bombones2025.Utilidades;
 
 namespace Bombones2025.Servicios.Servicios
 {
@@ -10,13 +11,13 @@ namespace Bombones2025.Servicios.Servicios
         {
             try
             {
-                _paisRepositorio = new PaisRepositorio();
+                _paisRepositorio = new PaisRepositorio(ConstantesDelSistema.umbralCache);
 
             }
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             } 
         }
 
