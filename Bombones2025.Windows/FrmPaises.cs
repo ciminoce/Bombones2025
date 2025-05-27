@@ -139,7 +139,7 @@ namespace Bombones2025.Windows
             if (paisEditar == null) return;
             try
             {
-                if (!_paisServicio.Agregar(paisEditar, out var errores))
+                if (!_paisServicio.Editar(paisEditar, out var errores))
                 {
                     GridHelper.SetearFila(r, paisEditar);
 
