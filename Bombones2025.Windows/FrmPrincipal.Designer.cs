@@ -35,6 +35,7 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             LblUsuario = new ToolStripStatusLabel();
+            BtnSalir = new Button();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -99,12 +100,23 @@
             LblUsuario.Size = new Size(118, 17);
             LblUsuario.Text = "toolStripStatusLabel2";
             // 
+            // BtnSalir
+            // 
+            BtnSalir.Location = new Point(688, 358);
+            BtnSalir.Name = "BtnSalir";
+            BtnSalir.Size = new Size(87, 54);
+            BtnSalir.TabIndex = 0;
+            BtnSalir.Text = "Salir";
+            BtnSalir.UseVisualStyleBackColor = true;
+            BtnSalir.Click += BtnSalir_Click;
+            // 
             // FrmPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(statusStrip1);
+            Controls.Add(BtnSalir);
             Controls.Add(BtnChocolates);
             Controls.Add(BtnRellenos);
             Controls.Add(BtnFrutosSecos);
@@ -126,5 +138,6 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolStripStatusLabel LblUsuario;
+        private Button BtnSalir;
     }
 }

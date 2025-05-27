@@ -96,5 +96,10 @@ namespace Bombones2025.Windows
         {
             LblUsuario.Text = usuarioLogueado.Nombre;
         }
+
+        private void BtnSalir_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

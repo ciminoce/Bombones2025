@@ -1,6 +1,5 @@
 using Bombones2025.Infraestructura;
 using Bombones2025.Servicios.Interfaces;
-using Bombones2025.Servicios.Servicios;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bombones2025.Windows
@@ -17,6 +16,13 @@ namespace Bombones2025.Windows
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             AppServices.Inicializar();
+
+            // Ensure ServiceProvider is not null before accessing it
+            if (AppServices.ServiceProvider == null)
+            {
+                throw new InvalidOperationException("El proveedor de servicios no ha sido inicializado.");
+            }
+
             IUsuarioServicio usuarioServicio = AppServices.ServiceProvider
                 .GetRequiredService<IUsuarioServicio>();
             Application.Run(new FrmLogin(usuarioServicio));

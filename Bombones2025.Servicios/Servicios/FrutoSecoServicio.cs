@@ -1,5 +1,4 @@
 ﻿using Bombones2025.DatosSql.Interfaces;
-using Bombones2025.DatosSql.Repositorios;
 using Bombones2025.Entidades.Entidades;
 using Bombones2025.Servicios.Interfaces;
 
@@ -7,10 +6,10 @@ namespace Bombones2025.Servicios.Servicios
 {
     public class FrutoSecoServicio : IFrutoSecoServicio
     {
-        private readonly FrutoSecoRepositorio _frutoRepositorio = null!;
-        public FrutoSecoServicio()
+        private readonly IFrutoSecoRepositorio? _frutoRepositorio;
+        public FrutoSecoServicio(IFrutoSecoRepositorio? frutoRepositorio)
         {
-            _frutoRepositorio = new FrutoSecoRepositorio(true);
+            _frutoRepositorio = frutoRepositorio;
         }
 
         public bool Existe(FrutoSeco fruto)

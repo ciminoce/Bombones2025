@@ -1,27 +1,15 @@
 ﻿using Bombones2025.DatosSql.Interfaces;
-using Bombones2025.DatosSql.Repositorios;
 using Bombones2025.Entidades.Entidades;
 using Bombones2025.Servicios.Interfaces;
-using Bombones2025.Utilidades;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bombones2025.Servicios.Servicios
 {
     public class PaisServicio : IPaisServicio
     {
-        private readonly PaisRepositorio _paisRepositorio = null!;
-        public PaisServicio()
+        private readonly IPaisRepositorio? _paisRepositorio;
+        public PaisServicio(IPaisRepositorio? paisRepositorio)
         {
-            try
-            {
-                _paisRepositorio = new PaisRepositorio(ConstantesDelSistema.umbralCache);
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            _paisRepositorio = paisRepositorio;
         }
 
         public bool Agregar(Pais pais, out List<string> errores)
