@@ -131,7 +131,7 @@ namespace Bombones2025.Windows
             if (fsEditar is null) return;
             try
             {
-                if (!_servicio.Editar(fsEditar, out var errores))
+                if (_servicio.Editar(fsEditar, out var errores))
                 {
                     GridHelper.SetearFila(r, fsEditar);
                     MessageBox.Show("Registro Editado", "Información",

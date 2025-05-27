@@ -54,7 +54,7 @@ namespace Bombones2025.Windows
             if (relleno is null) return;
             try
             {
-                if (!_servicio.Agregar(relleno, out var errores))
+                if (_servicio.Agregar(relleno, out var errores))
                 {
                     DataGridViewRow r = GridHelper.ConstruirFila(dgvDatos);
                     GridHelper.SetearFila(r, relleno);
@@ -129,7 +129,7 @@ namespace Bombones2025.Windows
             if (rellenoEditar is null) return;
             try
             {
-                if (!_servicio.Editar(rellenoEditar, out var errores))
+                if (_servicio.Editar(rellenoEditar, out var errores))
                 {
                     GridHelper.SetearFila(r, rellenoEditar);
                     MessageBox.Show("Registro Editado", "Información",

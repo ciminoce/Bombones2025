@@ -60,7 +60,7 @@ namespace Bombones2025.Windows
             if (pais == null) return;
             try
             {
-                if (!_paisServicio.Agregar(pais, out var errores))
+                if (_paisServicio.Agregar(pais, out var errores))
                 {
                     DataGridViewRow r = GridHelper.ConstruirFila(dgvDatos);
                     GridHelper.SetearFila(r, pais);
@@ -139,7 +139,7 @@ namespace Bombones2025.Windows
             if (paisEditar == null) return;
             try
             {
-                if (!_paisServicio.Editar(paisEditar, out var errores))
+                if (_paisServicio.Editar(paisEditar, out var errores))
                 {
                     GridHelper.SetearFila(r, paisEditar);
 
