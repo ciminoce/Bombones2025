@@ -39,9 +39,6 @@ namespace Bombones2025.Windows
                 GridHelper.AgregarFila(r,dgvDatos);
             }
         }
-
-
-
         private void TsbCerrar_Click(object sender, EventArgs e)
         {
             Close();

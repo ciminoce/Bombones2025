@@ -289,14 +289,14 @@
             toolStrip1.TabIndex = 4;
             toolStrip1.Text = "toolStrip1";
             // 
-            // FrmChocolates
+            // FrmRellenos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 617);
             Controls.Add(splitContainer1);
             Controls.Add(toolStrip1);
-            Name = "FrmChocolates";
+            Name = "FrmRellenos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Chocolates";
             Load += FrmRellenos_Load;

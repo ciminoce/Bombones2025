@@ -1,5 +1,6 @@
 ﻿using Bombones2025.Entidades.Entidades;
 using Bombones2025.Servicios.Interfaces;
+using Bombones2025.Windows.Helpers;
 
 namespace Bombones2025.Windows
 {
@@ -32,25 +33,12 @@ namespace Bombones2025.Windows
             dgvDatos.Rows.Clear();
             foreach (Relleno relleno in lista)
             {
-                DataGridViewRow r = new DataGridViewRow();
-                r.CreateCells(dgvDatos);
-                SetearFila(r, relleno);
-                AgregarFila(r);
+                DataGridViewRow r = GridHelper.ConstruirFila(dgvDatos);
+                GridHelper.SetearFila(r, relleno);
+                GridHelper.AgregarFila(r,dgvDatos);
             }
         }
 
-        private void AgregarFila(DataGridViewRow r)
-        {
-            dgvDatos.Rows.Add(r);
-        }
-
-        private void SetearFila(DataGridViewRow r, Relleno relleno)
-        {
-            r.Cells[0].Value = relleno.RellenoId;
-            r.Cells[1].Value = relleno.Descripcion;
-
-            r.Tag = relleno;
-        }
 
         private void TsbCerrar_Click(object sender, EventArgs e)
         {
@@ -66,19 +54,18 @@ namespace Bombones2025.Windows
             if (relleno is null) return;
             try
             {
-                if (!_servicio.Existe(relleno))
+                if (!_servicio.Agregar(relleno, out var errores))
                 {
-                    _servicio.Guardar(relleno);
-                    DataGridViewRow r = ConstuirFila();
-                    SetearFila(r, relleno);
-                    AgregarFila(r);
+                    DataGridViewRow r = GridHelper.ConstruirFila(dgvDatos);
+                    GridHelper.SetearFila(r, relleno);
+                    GridHelper.AgregarFila(r, dgvDatos);
                     MessageBox.Show("Registro Agregado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
                 else
                 {
-                    MessageBox.Show("Registro Duplicado", "Error",
+                    MessageBox.Show(errores.First(), "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -90,12 +77,6 @@ namespace Bombones2025.Windows
             }
         }
 
-        private DataGridViewRow ConstuirFila()
-        {
-            var r = new DataGridViewRow();
-            r.CreateCells(dgvDatos);
-            return r;
-        }
 
         private void TsbBorrar_Click(object sender, EventArgs e)
         {
@@ -110,10 +91,18 @@ namespace Bombones2025.Windows
             if (dr == DialogResult.No) return;
             try
             {
-                _servicio.Borrar(relleno.RellenoId);
-                QuitarFila(r);
-                MessageBox.Show("Registro Eliminado", "Información",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if(_servicio.Borrar(relleno.RellenoId, out var errores))
+                {
+                    GridHelper.QuitarFila(r,dgvDatos);
+                    MessageBox.Show("Registro Eliminado", "Información",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                else
+                {
+                    MessageBox.Show(errores.First(), "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
             }
             catch (Exception ex)
@@ -124,10 +113,6 @@ namespace Bombones2025.Windows
             }
         }
 
-        private void QuitarFila(DataGridViewRow r)
-        {
-            dgvDatos.Rows.Remove(r);
-        }
 
         private void TsbEditar_Click(object sender, EventArgs e)
         {
@@ -144,17 +129,16 @@ namespace Bombones2025.Windows
             if (rellenoEditar is null) return;
             try
             {
-                if (!_servicio.Existe(rellenoEditar))
+                if (!_servicio.Editar(rellenoEditar, out var errores))
                 {
-                    _servicio.Guardar(rellenoEditar);
-                    SetearFila(r, rellenoEditar);
+                    GridHelper.SetearFila(r, rellenoEditar);
                     MessageBox.Show("Registro Editado", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
                 else
                 {
-                    MessageBox.Show("Registro Duplicado", "Error",
+                    MessageBox.Show(errores.First(), "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -165,7 +149,6 @@ namespace Bombones2025.Windows
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
     }
 }

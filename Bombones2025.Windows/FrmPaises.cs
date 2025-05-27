@@ -60,9 +60,8 @@ namespace Bombones2025.Windows
             if (pais == null) return;
             try
             {
-                if (!_paisServicio.Existe(pais))
+                if (!_paisServicio.Agregar(pais, out var errores))
                 {
-                    _paisServicio.Guardar(pais);
                     DataGridViewRow r = GridHelper.ConstruirFila(dgvDatos);
                     GridHelper.SetearFila(r, pais);
                     GridHelper.AgregarFila(r, dgvDatos);
@@ -72,7 +71,7 @@ namespace Bombones2025.Windows
                 }
                 else
                 {
-                    MessageBox.Show("Pais existente", "Error",
+                    MessageBox.Show(errores.First(), "Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 }
@@ -101,9 +100,18 @@ namespace Bombones2025.Windows
             if (dr == DialogResult.No) return;
             try
             {
-                _paisServicio.Borrar(paisBorrar.PaisId);
-                GridHelper.QuitarFila(r, dgvDatos);
-                MessageBox.Show("País eliminado");
+                if(_paisServicio.Borrar(paisBorrar.PaisId, out var errores))
+                {
+                    GridHelper.QuitarFila(r, dgvDatos);
+                    MessageBox.Show("País eliminado");
+
+                }
+                else
+                {
+                    MessageBox.Show(errores.First(), "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
 
             }
             catch (Exception)
@@ -131,9 +139,8 @@ namespace Bombones2025.Windows
             if (paisEditar == null) return;
             try
             {
-                if (!_paisServicio.Existe(paisEditar))
+                if (!_paisServicio.Agregar(paisEditar, out var errores))
                 {
-                    _paisServicio.Guardar(paisEditar);
                     GridHelper.SetearFila(r, paisEditar);
 
                     MessageBox.Show("Pais editado", "Mensaje",
@@ -142,7 +149,7 @@ namespace Bombones2025.Windows
                 }
                 else
                 {
-                    MessageBox.Show("Pais existente", "Error",
+                    MessageBox.Show(errores.First(), "Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 }

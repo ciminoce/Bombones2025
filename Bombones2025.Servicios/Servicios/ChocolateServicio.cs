@@ -22,18 +22,6 @@ namespace Bombones2025.Servicios.Servicios
             return _chocolateRepositorio.GetLista();
         }
 
-        //public void Guardar(Chocolate chocolate)
-        //{
-        //    if (chocolate.ChocolateId == 0)
-        //    {
-        //        _chocolateRepositorio.Agregar(chocolate);
-        //    }
-        //    else
-        //    {
-        //        _chocolateRepositorio.Editar(chocolate);
-        //    }
-        //}
-
         public bool Borrar(int chocolateId, out List<string> errores)
         {
             errores=new List<string>();

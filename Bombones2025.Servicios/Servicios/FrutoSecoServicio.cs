@@ -1,4 +1,5 @@
-﻿using Bombones2025.DatosSql.Repositorios;
+﻿using Bombones2025.DatosSql.Interfaces;
+using Bombones2025.DatosSql.Repositorios;
 using Bombones2025.Entidades.Entidades;
 using Bombones2025.Servicios.Interfaces;
 
@@ -22,21 +23,35 @@ namespace Bombones2025.Servicios.Servicios
             return _frutoRepositorio.GetLista();
         }
 
-        public void Guardar(FrutoSeco fruto)
+        public bool Agregar(FrutoSeco fruto, out List<string> errores)
         {
-            if (fruto.FrutoSecoId == 0)
+            errores = new List<string>();
+            if (_frutoRepositorio.Existe(fruto))
             {
-                _frutoRepositorio.Agregar(fruto);
+                errores.Add("Fruto existente!!!");
+                return false;
             }
-            else
-            {
-                _frutoRepositorio.Editar(fruto);
-            }
+            _frutoRepositorio.Agregar(fruto);
+            return true;
         }
 
-        public void Borrar(int frutoId)
+        public bool Editar(FrutoSeco fruto, out List<string> errores)
         {
+            errores = new List<string>();
+            if (_frutoRepositorio.Existe(fruto))
+            {
+                errores.Add("Fruto existente!!! " + Environment.NewLine + "Edición denegada");
+                return false;
+            }
+            _frutoRepositorio.Editar(fruto);
+            return true;
+        }
+
+        public bool Borrar(int frutoId, out List<string> errores)
+        {
+            errores = new List<string>();
             _frutoRepositorio.Borrar(frutoId);
+            return true;
         }
     }
 }

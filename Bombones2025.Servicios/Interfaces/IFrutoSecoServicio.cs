@@ -4,9 +4,10 @@ namespace Bombones2025.Servicios.Interfaces
 {
     public interface IFrutoSecoServicio
     {
-        void Borrar(int frutoId);
+        bool Borrar(int frutoId, out List<string> errores);
         bool Existe(FrutoSeco fruto);
         List<FrutoSeco> GetLista();
-        void Guardar(FrutoSeco fruto);
+        bool Agregar(FrutoSeco fruto, out List<string> errores);
+        bool Editar(FrutoSeco fruto, out List<string> errores);
     }
 }
