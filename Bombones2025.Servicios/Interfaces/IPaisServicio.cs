@@ -4,10 +4,11 @@ namespace Bombones2025.Servicios.Interfaces
 {
     public interface IPaisServicio
     {
-        void Borrar(int paisId);
+        bool Borrar(int paisId, out List<string> errores);
         bool Existe(Pais pais);
         List<Pais> Filtrar(string textoParaFiltrar);
         List<Pais> GetLista();
-        void Guardar(Pais pais);
+        bool Agregar(Pais pais, out List<string> errores);
+        bool Editar(Pais pais, out List<string> errores);
     }
 }

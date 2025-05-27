@@ -42,6 +42,15 @@ namespace Bombones2025.Windows.Helpers
                     r.Cells[0].Value=pais.PaisId;
                     r.Cells[1].Value = pais.NombrePais;
                     break;
+                case Relleno relleno:
+                    r.Cells[0].Value = relleno.RellenoId;
+                    r.Cells[1].Value = relleno.Descripcion;
+                    break;
+                case FrutoSeco fruto:
+                    r.Cells[0].Value = fruto.FrutoSecoId;
+                    r.Cells[1].Value = fruto.Descripcion;
+                    break;
+
             }
 
             r.Tag = obj;

@@ -1,4 +1,5 @@
-﻿using Bombones2025.DatosSql.Repositorios;
+﻿using Bombones2025.DatosSql.Interfaces;
+using Bombones2025.DatosSql.Repositorios;
 using Bombones2025.Entidades.Entidades;
 using Bombones2025.Servicios.Interfaces;
 using Bombones2025.Utilidades;
@@ -35,9 +36,35 @@ namespace Bombones2025.Servicios.Servicios
             }
         }
 
-        public void Borrar(int frutoId)
+        public bool Borrar(int rellenoId, out List<string> errores)
         {
-            _rellenoRepositorio.Borrar(frutoId);
+            errores = new List<string>();
+            _rellenoRepositorio.Borrar(rellenoId);
+            return true;
+        }
+
+        public bool Agregar(Relleno relleno, out List<string> errores)
+        {
+            errores = new List<string>();
+            if (_rellenoRepositorio.Existe(relleno))
+            {
+                errores.Add("País existente!!!");
+                return false;
+            }
+            _rellenoRepositorio.Agregar(relleno);
+            return true;
+        }
+
+        public bool Editar(Relleno relleno, out List<string> errores)
+        {
+            errores = new List<string>();
+            if (_rellenoRepositorio.Existe(relleno))
+            {
+                errores.Add("Relleno existente!!! " + Environment.NewLine + "Edición denegada");
+                return false;
+            }
+            _rellenoRepositorio.Editar(relleno);
+            return true;
         }
     }
 }
